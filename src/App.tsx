@@ -1,11 +1,28 @@
-import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import HelpText from './HelpText';
+import { useState } from 'react'
+import TodoItem from './components/TodoItem';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [todos, setTodos] = useState<string[]>([]);
+  const [text, setText] = useState("");
+  const [hasError, setHasError] = useState(false);
+
+  const onAddTodo = (todo: string) => {
+    if(todo === "") {
+      setHasError(true);
+      return;
+    }
+
+    setHasError(false);
+    setTodos((currentTodos) => [ ...currentTodos, todo]);
+    setText("");
+  }
+
+  const onDeleteTodo = (index: number) => {
+    setTodos(todos.filter((todo, idx) => index !== idx));
+  }
 
   return (
     <>
@@ -17,16 +34,18 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React + Todo</h1>
+      <h1>Todo App</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <HelpText fileName='src/App.tsx' highlight={true} count={count} />
+        <p>Add in a todo and click enter</p>
+        <div>
+          <input type='text' value={text} onChange={(event) => setText(event.target.value)} />
+          <button onClick={() => onAddTodo(text)}>Add</button>
+        </div>
+        {hasError && <div style={{ color: "red" }}>Cannot add empty todo</div>}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className='todo-item-container'>
+        {todos.map((todo, index) => <TodoItem key={`todo-key-${index}`} todo={todo} index={index} handleDelete={onDeleteTodo} />)}
+      </div>
     </>
   )
 }

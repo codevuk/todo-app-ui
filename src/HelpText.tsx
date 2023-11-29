@@ -6,7 +6,7 @@ type HelpTextProps = {
 }
 
 function HelpText(props: HelpTextProps) {
-    const { fileName, highlight, count } = props;
+    const { highlight, count, fileName } = props;
 
     return (
         <p>
