@@ -25,11 +25,7 @@ function App() {
         </a>
       </div>
       <h1>Todo App</h1>
-      {authorized ? (
-        <TodosContainer />
-      ) : (
-        <Login handleSuccess={() => setAuthorized(true)} />
-      )}
+      {authorized ? <TodosContainer /> : <Login handleSuccess={() => setAuthorized(true)} />}
     </>
   );
 }
